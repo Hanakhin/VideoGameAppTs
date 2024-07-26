@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .homepage{
+        @apply w-screen h-screen bg-white ;
+    }
+}
+
+*{
+    font-family: "Roboto Mono", monospace;
+    font-weight: 500;
+}
