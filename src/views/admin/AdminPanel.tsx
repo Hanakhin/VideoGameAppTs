@@ -29,7 +29,10 @@ const AdminPanel: React.FC = () => {
     };
 
     if (userRole !== 'admin') {
-        return <div className="text-red-500 text-center">Accès refusé. Vous n'êtes pas autorisé à voir cette page.</div>; // Message d'accès refusé
+        return <div
+            className="text-red-500 text-center flex flex-col items-center justify-center h-screen w-screen">Accès refusé. Vous n'êtes pas autorisé à voir cette page.
+            <Link to={'/'} className={'text-2xl text-gray-900 hover:text-red-700 '}>Retourner en lieu sur :/</Link>
+        </div>; // Message d'accès refusé
     }
 
     return (

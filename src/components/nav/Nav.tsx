@@ -4,10 +4,9 @@ import { useAuth } from "../../contexts/authContext.tsx";
 import { auth } from "../../../server/firebase/firebaseConfig.ts";
 
 const Nav: React.FC = () => {
-    const { userLogged, currentUser } = useAuth();
+    const { userLogged, currentUser,userRole } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-
     const handleLogOut = () => {
         return auth.signOut();
     }
@@ -42,6 +41,7 @@ const Nav: React.FC = () => {
                         <Link to="/" className="text-gray-300 hover:text-blue-400 transition duration-300">Home</Link>
                         <Link to="/contact" className="text-gray-300 hover:text-blue-400 transition duration-300">Contact</Link>
                         <Link to="#" className="text-gray-300 hover:text-blue-400 transition duration-300">About</Link>
+                        {userRole === 'admin' && <Link to="/admin" className="text-gray-300 hover:text-blue-400 transition duration-300">AdminPanel</Link>}
                     </div>
                     <div className="relative flex items-center space-x-4">
                         {userLogged ? (
@@ -60,8 +60,7 @@ const Nav: React.FC = () => {
                                         >
                                             Logout
                                         </button>
-                                    </div>
-                                )}
+                                    </div>)}
                             </div>
                         ) : (
                             <>
