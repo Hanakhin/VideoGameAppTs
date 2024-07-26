@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import GameCard from '../../components/games/GameCard.tsx';
+import {useAuth} from "../../contexts/authContext.tsx";
 
 interface Game {
     id: string;
@@ -18,7 +19,7 @@ const GamePage: React.FC = () => {
     const [items, setItems] = useState<Game[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    const currentUser = useAuth()
     const fetchData = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, 'games'));
@@ -83,14 +84,16 @@ const GamePage: React.FC = () => {
                         />
                     ))}
                 </div>
-                <div className="text-center mt-16">
-                    <Link
-                        to="/addgame"
-                        className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:shadow-lg hover:from-blue-600 hover:to-purple-700 transform hover:scale-105"
-                    >
-                        Add New Game
-                    </Link>
-                </div>
+                {currentUser.userRole === 'admin' &&
+                    <div className="text-center mt-16">
+                        <Link
+                            to="/addgame"
+                            className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 hover:shadow-lg hover:from-blue-600 hover:to-purple-700 transform hover:scale-105"
+                        >
+                            Add New Game
+                        </Link>
+                    </div>
+                }
             </div>
         </div>
     );

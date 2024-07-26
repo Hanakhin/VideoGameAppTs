@@ -18,7 +18,8 @@ const Register: React.FC = () => {
         setError('');
         setIsRegistering(true);
         try {
-            await CUWEP(email, password);
+            // Inscription avec un rôle par défaut 'user'
+            await CUWEP(email, password, 'user'); // Rôle par défaut
             navigate('/');
         } catch (error) {
             setError((error as Error).message);
@@ -49,7 +50,7 @@ const Register: React.FC = () => {
                                 autoComplete="email"
                                 required
                                 value={email}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
@@ -65,7 +66,7 @@ const Register: React.FC = () => {
                                 autoComplete="new-password"
                                 required
                                 value={password}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
