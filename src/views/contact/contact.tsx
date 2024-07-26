@@ -1,13 +1,15 @@
 import React, { useRef, useState, FormEvent } from 'react';
 import emailjs from '@emailjs/browser';
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Nav from "../../components/nav/Nav.tsx";
+import {useAuth} from "../../contexts/authContext.tsx";
 
 const Contact: React.FC = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const form = useRef<HTMLFormElement>(null);
-
+    const navigate = useNavigate();
+    const {userLogged } =useAuth()
     const sendEmail = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -21,6 +23,7 @@ const Contact: React.FC = () => {
                 () => {
                     setSuccess(true);
                     setError(false);
+                    navigate('/')
                 },
                 (error) => {
                     setError(true);
@@ -45,7 +48,7 @@ const Contact: React.FC = () => {
                     <form className="space-y-6 bg-gray-800 p-8 rounded-xl shadow-lg" ref={form} onSubmit={sendEmail} method="GET">
                         <div>
                             <label htmlFor="from_name" className="block text-sm font-medium text-gray-300">
-                                Nom
+                                Votre Nom
                             </label>
                             <input
                                 id="from_name"
@@ -71,24 +74,34 @@ const Contact: React.FC = () => {
 
                         <div>
                             <label htmlFor="message" className="block text-sm font-medium text-gray-300">
-                                Message
+                                Ecrivez-nous
                             </label>
                             <textarea
                                 id="message"
                                 name="message"
                                 required
                                 rows={4}
-                                className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                             />
                         </div>
 
                         <div>
-                            <button
-                                type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
-                            >
-                                Envoyer
-                            </button>
+                            {userLogged ? (
+                                    <button
+                                        type="submit"
+                                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
+                                    >
+                                        Envoyer
+                                    </button>
+                                )
+                                :
+                                (
+                                    <p>vous devez vous <Link to={'/login'} className={'font-medium text-blue-400 hover:text-blue-300'}>connecter</Link> pour envoyer un message</p>
+                                )
+
+
+                            }
+
                         </div>
                     </form>
 

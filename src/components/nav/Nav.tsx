@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext.tsx";
 import { auth } from "../../../server/firebase/firebaseConfig.ts";
 
 const Nav: React.FC = () => {
     const { userLogged, currentUser } = useAuth();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const handleLogOut = () => {
         return auth.signOut();
     }
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    }
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className="bg-gray-900 shadow-lg">
@@ -24,17 +43,26 @@ const Nav: React.FC = () => {
                         <Link to="/contact" className="text-gray-300 hover:text-blue-400 transition duration-300">Contact</Link>
                         <Link to="#" className="text-gray-300 hover:text-blue-400 transition duration-300">About</Link>
                     </div>
-                    <div className="flex items-center space-x-4">
+                    <div className="relative flex items-center space-x-4">
                         {userLogged ? (
-                            <>
-                                <span className="text-gray-300">Welcome <span className="text-blue-400">{currentUser?.email}</span></span>
-                                <button
-                                    onClick={handleLogOut}
-                                    className="text-red-400 hover:text-red-500 transition duration-300"
-                                >
-                                    Logout
-                                </button>
-                            </>
+                            <div ref={dropdownRef} className="relative">
+                                <span className="text-gray-300 cursor-pointer flex items-center" onClick={toggleDropdown}>
+                                    Welcome <span className="text-blue-400 ml-1">{currentUser?.email}</span>
+                                    <svg className={`w-4 h-4 ml-2 transition-transform duration-300 ${isDropdownOpen ? 'transform rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </span>
+                                {isDropdownOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 transition-opacity duration-300 opacity-100">
+                                        <button
+                                            onClick={handleLogOut}
+                                            className="block w-full text-left px-4 py-2 text-red-700 "
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <>
                                 <Link
