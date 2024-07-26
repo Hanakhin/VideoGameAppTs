@@ -1,10 +1,7 @@
-import { db } from './firebaseConfig'
+import { db } from './firebaseConfig';
 import { addDoc, deleteDoc, updateDoc, collection, doc } from "firebase/firestore";
-import {useNavigate} from "react-router-dom";
-
 
 export const addGame = async (title: string, description: string, price: number, type: string, image: string) => {
-
     try {
         const docRef = await addDoc(collection(db, 'games'), {
             title,
@@ -28,6 +25,26 @@ export const deleteGame = async (gameId: string) => {
         console.log("Document successfully deleted!");
     } catch (e) {
         console.error("Error deleting game: ", e);
+        throw e;
     }
-};
+}
 
+interface GameData {
+    title?: string;
+    description?: string;
+    price?: number;
+    type?: string;
+    image?: string;
+    // Ajoutez d'autres champs si nécessaire
+}
+
+export const updateGame = async (gameId: string, updatedData: GameData) => {
+    try {
+        const gameDocRef = doc(db, 'games', gameId);
+        await updateDoc(gameDocRef, updatedData);
+        console.log("Document successfully updated!");
+    } catch (e) {
+        console.error("Error updating document: ", e);
+        throw e;
+    }
+}

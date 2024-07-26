@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { deleteGame } from "../../../server/firebase/firestore.ts";
+import { Link } from 'react-router-dom';
 
 interface GameCardProps {
     id: string;
@@ -49,19 +50,27 @@ const GameCard: React.FC<GameCardProps> = ({ id, title, description, image, pric
             />
             <div className="p-6">
                 <h3 className="font-bold text-xl mb-2 text-blue-400">{title}</h3>
-                <p className="text-gray-300 text-base mb-4">{description}</p>
+                <p className="text-gray-300 text-sm mb-4 h-12 overflow-hidden">{description}</p>
                 <p className="text-purple-400 font-bold text-xl mb-2">${price}</p>
                 <p className="text-gray-400 text-sm mb-4">{type}</p>
                 {error && <p className="text-red-400 text-sm mb-2">{error}</p>}
-                <button
-                    className={`${
-                        isDeleting ? 'bg-gray-600' : 'bg-red-500 hover:bg-red-600'
-                    } text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out`}
-                    onClick={handleDelete}
-                    disabled={isDeleting}
-                >
-                    {isDeleting ? 'Suppression...' : 'Supprimer le jeu'}
-                </button>
+                <div className="flex justify-between items-center">
+                    <Link
+                        to={`/edit-game/${id}`}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out"
+                    >
+                        Modifier
+                    </Link>
+                    <button
+                        className={`${
+                            isDeleting ? 'bg-gray-600' : 'bg-red-500 hover:bg-red-600'
+                        } text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out`}
+                        onClick={handleDelete}
+                        disabled={isDeleting}
+                    >
+                        {isDeleting ? 'Suppression...' : 'Supprimer'}
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -12,6 +12,7 @@ import Register from "./views/auth/register/Register.tsx";
 import Contact from "./views/contact/contact.tsx";
 import GamePage from "./views/games";
 import AddGame from "./views/games/AddGame.tsx";
+import EditGameForm from "./components/games/EditGameForm.tsx";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
     {
         path:'/addgame',
         element:<AddGame/>
+    },
+    {
+        path:'/edit-game/:id',
+        element:<EditGameForm/>
     }
 
 ])
