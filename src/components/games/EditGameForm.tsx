@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import {useParams, useNavigate, Link} from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '../../../server/firebase/firebaseConfig.ts';
 import Nav from "../../components/nav/Nav.tsx";
@@ -28,10 +28,10 @@ const EditGame: React.FC = () => {
                 if (gameDoc.exists()) {
                     setGameData(gameDoc.data() as GameData);
                 } else {
-                    setError('Game not found');
+                    setError('Jeu non trouvé');
                 }
             } catch (error) {
-                setError('Failed to fetch game data');
+                setError('Échec de la récupération des données du jeu');
                 console.error(error);
             } finally {
                 setLoading(false);
@@ -50,7 +50,7 @@ const EditGame: React.FC = () => {
                 await updateDoc(gameDocRef, gameData);
                 navigate('/games');
             } catch (error) {
-                setError('Failed to update game');
+                setError('Échec de la mise à jour du jeu');
                 console.error(error);
             } finally {
                 setIsUpdating(false);
@@ -75,7 +75,7 @@ const EditGame: React.FC = () => {
         return (
             <div className="flex justify-center items-center h-screen bg-gray-100">
                 <div className="text-center text-red-600 bg-white p-8 rounded-lg shadow-md">
-                    <h2 className="text-2xl font-bold mb-4">Error</h2>
+                    <h2 className="text-2xl font-bold mb-4">Erreur</h2>
                     <p>{error}</p>
                 </div>
             </div>
@@ -83,11 +83,11 @@ const EditGame: React.FC = () => {
     }
 
     return (
-        <div className="from-gray-900 to-gray-800 min-h-screen">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
             <Nav />
             <div className="container mx-auto px-4 py-12">
                 <h2 className="text-center text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                    Modifier le jeu
+                    Modifier le Jeu
                 </h2>
                 <div className="max-w-lg mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
                     <form className="space-y-6" onSubmit={handleSubmit}>
@@ -136,6 +136,7 @@ const EditGame: React.FC = () => {
                                 className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
+
                         <div>
                             <label htmlFor="type" className="block text-sm font-medium text-gray-300">
                                 Type
@@ -148,15 +149,16 @@ const EditGame: React.FC = () => {
                                 onChange={handleChange}
                                 className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             >
-                                <option value="">Select a type</option>
+                                <option value="">Sélectionner un type</option>
                                 <option value="action">Action</option>
-                                <option value="adventure">Adventure</option>
+                                <option value="adventure">Aventure</option>
                                 <option value="rpg">RPG</option>
-                                <option value="strategy">Strategy</option>
+                                <option value="strategy">Stratégie</option>
                                 <option value="sports">Sports</option>
                                 <option value="simulation">Simulation</option>
                             </select>
                         </div>
+
                         <div>
                             <label htmlFor="image" className="block text-sm font-medium text-gray-300">
                                 URL de l'image
@@ -175,11 +177,11 @@ const EditGame: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={isUpdating}
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
+                                className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
                             >
                                 {isUpdating ? 'Mise à jour...' : 'Mettre à jour'}
                             </button>
-                            <Link to={"/games"}>Retour</Link>
+                            <Link to={"/games"} className="block text-center mt-4 text-white hover:text-indigo-500">Retour</Link>
                         </div>
                     </form>
                 </div>

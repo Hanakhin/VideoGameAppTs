@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { deleteGame } from "../../../server/firebase/firestore.ts";
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../contexts/authContext.tsx";
+import Modal from "../popups/confirmationPopup.tsx"; // Assurez-vous d'importer le composant Modal
 
 interface GameCardProps {
     id: string;
@@ -20,21 +21,21 @@ const GameCard: React.FC<GameCardProps> = ({ id, title, description, image, pric
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [imgSrc, setImgSrc] = useState(image);
+    const [isModalOpen, setIsModalOpen] = useState(false); // État pour le modal
 
     const handleDelete = async () => {
-        if (window.confirm(`Êtes-vous sûr de vouloir supprimer le jeu "${title}" ?`)) {
-            setIsDeleting(true);
-            setError(null);
-            try {
-                await deleteGame(id);
-                console.log('Jeu supprimé avec succès');
-                onDelete();
-            } catch (error) {
-                console.error('Échec de la suppression du jeu :', error);
-                setError('Échec de la suppression du jeu. Veuillez réessayer.');
-            } finally {
-                setIsDeleting(false);
-            }
+        setIsDeleting(true);
+        setError(null);
+        try {
+            await deleteGame(id);
+            console.log('Jeu supprimé avec succès');
+            onDelete();
+        } catch (error) {
+            console.error('Échec de la suppression du jeu :', error);
+            setError('Échec de la suppression du jeu. Veuillez réessayer.');
+        } finally {
+            setIsDeleting(false);
+            setIsModalOpen(false); // Fermer le modal après suppression
         }
     };
 
@@ -69,13 +70,22 @@ const GameCard: React.FC<GameCardProps> = ({ id, title, description, image, pric
                             className={`${
                                 isDeleting ? 'bg-gray-600' : 'bg-red-500 hover:bg-red-600'
                             } text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out`}
-                            onClick={handleDelete}
+                            onClick={() => setIsModalOpen(true)} // Ouvrir le modal
                             disabled={isDeleting}
                         >
-                            {isDeleting ? 'Suppression...' : 'Supprimer'}
+                            Supprimer
                         </button>
                     </div>
                 )}
+
+                {/* Modal de confirmation */}
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)} // Fermer le modal
+                    onConfirm={handleDelete}
+                    title="Confirmation de Suppression"
+                    message={`Êtes-vous sûr de vouloir supprimer le jeu "${title}" ?`}
+                />
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import App from './App.tsx';
 import './index.css';
 import {
     RouterProvider,
-    createBrowserRouter
+    createBrowserRouter,
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/authContext.tsx";
 import Login from "./views/auth/login/Login.tsx";

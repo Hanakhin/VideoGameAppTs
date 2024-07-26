@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../../../server/firebase/firebaseConfig'; // Assurez-vous d'importer votre instance Firestore
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { useAuth } from '../../contexts/authContext'; // Assurez-vous d'importer votre contexte d'authentification
-import { Link } from 'react-router-dom'; // Importez le composant Link
+import { db } from '../../../server/firebase/firebaseConfig';
+import {collection, getDocs, doc, updateDoc} from 'firebase/firestore';
+import { useAuth } from '../../contexts/authContext';
+import { Link } from 'react-router-dom';
 
 const AdminPanel: React.FC = () => {
     const { userRole } = useAuth(); // Récupérer le rôle de l'utilisateur connecté
