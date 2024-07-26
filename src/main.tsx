@@ -10,6 +10,8 @@ import {AuthProvider} from "./contexts/authContext.tsx";
 import Login from "./views/auth/login/Login.tsx";
 import Register from "./views/auth/register/Register.tsx";
 import Contact from "./views/contact/contact.tsx";
+import GamePage from "./views/games";
+import AddGame from "./views/games/AddGame.tsx";
 
 
 const router = createBrowserRouter([
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
     {
         path:'/contact',
         element:<Contact/>
+    },
+    {
+        path:'/games',
+        element:<GamePage/>
+    },
+    {
+        path:'/addgame',
+        element:<AddGame/>
     }
 
 ])
